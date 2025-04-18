@@ -1,3 +1,3 @@
-public class SortPanel { // jenom vykreslování
+public class SortPanel { // jenom vykreslování.
 
 }
