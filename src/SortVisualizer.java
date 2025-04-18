@@ -1,10 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-import Algorithms.BubbleSort;
-import Algorithms.SortPanel;
-import Algorithms.InsertionSort;
-import Algorithms.SelectionSort;
+import Algorithms.*;
 
 // jenom načte GUI a připojí vše dohromady
 public class SortVisualizer extends JFrame {
@@ -35,14 +32,14 @@ public class SortVisualizer extends JFrame {
         controls.add(delaySpinner);
 
         controls.add(new JLabel("Algoritmus:"));
-        algorithmBox = new JComboBox<>(new String[]{"Bubble Sort","Insertion Sort", "Selection Sort"});
+        algorithmBox = new JComboBox<>(new String[]{"Bubble Sort","Insertion Sort", "Selection Sort", "Quick Sort", "Merge Sort", "Shell Sort"});
         controls.add(algorithmBox);
 
         startButton = new JButton("Spustit");
         controls.add(startButton);
 
-        orderedCheckBox = new JCheckBox("Posloupnost 1..n", true);
-        controls.add(orderedCheckBox);
+        JLabel timeLabel = new JLabel("Doba běhu: 0.000 s");
+        controls.add(timeLabel);
 
         add(controls, BorderLayout.NORTH);
 
@@ -57,8 +54,8 @@ public class SortVisualizer extends JFrame {
         startButton.addActionListener(e -> {
             int size = (int) sizeSpinner.getValue();
             int delay = (int) delaySpinner.getValue();
-            boolean ordered = orderedCheckBox.isSelected();
-            sortPanel.generateArray(size, ordered);
+            long startTime = System.nanoTime();
+            sortPanel.generateArray(size, true);
 
             new Thread(() -> {
                 startButton.setEnabled(false);
@@ -70,11 +67,20 @@ public class SortVisualizer extends JFrame {
                     InsertionSort.sort(sortPanel, delay);
                 } else if ("Selection Sort".equals(algo)) {
                     SelectionSort.sort(sortPanel, delay);
+                } else if ("Quick Sort".equals(algo)) {
+                    QuickSort.sort(sortPanel, delay);
+                } else if ("Merge Sort".equals(algo)) {
+                    MergeSort.sort(sortPanel, delay);
+                } else if ("Shell Sort".equals(algo)) {
+                    ShellSort.sort(sortPanel, delay);
                 }
 
                 sortPanel.clearHighlight();
                 sortPanel.repaint();
                 startButton.setEnabled(true);
+                long endTime = System.nanoTime();
+                double duration = (endTime - startTime) / 1_000_000_000.0;
+                timeLabel.setText(String.format("Doba běhu: %.3f s", duration));
             }).start();
         });
 

@@ -3,6 +3,7 @@ package Algorithms;
 public class SelectionSort {
     public static void sort(SortPanel panel, int delay) {
         int[] arr = panel.getValues();
+        panel.clearSorted(); // smažeme staré označení
 
         try {
             for (int i = 0; i < arr.length - 1; i++) {
@@ -24,16 +25,13 @@ public class SelectionSort {
                     panel.setValues(arr);
                 }
 
-
-                // Tady označíme, že prvek na pozici i je hotový
-                panel.setSortedUntil(i);
-                panel.repaint();
+                // Označíme prvek na pozici i jako hotový
+                panel.markSorted(i);
                 Thread.sleep(delay);
             }
 
-            // Poslední prvek je taky hotový
-            panel.setSortedUntil(arr.length - 1);
-            panel.repaint();
+            // Označíme poslední prvek jako hotový
+            panel.markSorted(arr.length - 1);
 
         } catch (InterruptedException e) {
             e.printStackTrace();
