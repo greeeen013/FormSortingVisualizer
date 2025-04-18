@@ -4,6 +4,7 @@ package Algorithms;
 public class BubbleSort {
     public static void sort(SortPanel panel, int delay) {
         int[] arr = panel.getValues();
+        panel.clearSorted(); // smaže předchozí značky
 
         try {
             for (int i = 0; i < arr.length - 1; i++) {
@@ -20,9 +21,15 @@ public class BubbleSort {
 
                     Thread.sleep(delay);
                 }
+
+                panel.markSorted(arr.length - i - 1); // označí jako hotový
             }
+
+            panel.markSorted(0); // první prvek je nakonec taky hotový
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 }
+

@@ -24,6 +24,7 @@ public class SelectionSort {
                     panel.setValues(arr);
                 }
 
+
                 // Tady označíme, že prvek na pozici i je hotový
                 panel.setSortedUntil(i);
                 panel.repaint();

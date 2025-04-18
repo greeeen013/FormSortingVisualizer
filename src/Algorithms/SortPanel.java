@@ -2,16 +2,15 @@ package Algorithms;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Random;
+import java.util.*;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Collections;
 
 // jenom vykreslování
 public class SortPanel extends JPanel {
     private int[] values;
     private int activeIndex = -1;
     private int compareIndex = -1;
+    private Set<Integer> sortedIndices = new HashSet<>();
 
     private int sortedUntil = -1;
 
@@ -63,9 +62,15 @@ public class SortPanel extends JPanel {
         this.compareIndex = -1;
     }
 
-    public void resetSorted() {
-        this.sortedUntil = -1;
+    public void markSorted(int index) {
+        sortedIndices.add(index);
+        repaint();
     }
+
+    public void clearSorted() {
+        sortedIndices.clear();
+    }
+
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -82,13 +87,14 @@ public class SortPanel extends JPanel {
             int width = nextX - x - 1;
             if (width < 1) width = 1;
 
-            if (i <= sortedUntil) {
-                g.setColor(Color.GREEN); // hotové prvky
+            if (sortedIndices.contains(i)) {
+                g.setColor(Color.GREEN);
             } else if (i == activeIndex) {
                 g.setColor(Color.RED);
             } else if (i == compareIndex) {
                 g.setColor(Color.YELLOW);
-            }
+            } else
+                g.setColor(Color.BLUE);
 
             int barHeight = values[i];
             g.fillRect(x, getHeight() - barHeight, width, barHeight);
