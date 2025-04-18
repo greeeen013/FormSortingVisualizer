@@ -31,7 +31,7 @@ public class SortVisualizer extends JFrame {
         controls.add(sizeSpinner);
 
         controls.add(new JLabel("Delay (ms):"));
-        delaySpinner = new JSpinner(new SpinnerNumberModel(30, 0, 1000, 10));
+        delaySpinner = new JSpinner(new SpinnerNumberModel(10, 0, 1000, 10));
         controls.add(delaySpinner);
 
         controls.add(new JLabel("Algoritmus:"));

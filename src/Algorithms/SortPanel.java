@@ -13,6 +13,12 @@ public class SortPanel extends JPanel {
     private int activeIndex = -1;
     private int compareIndex = -1;
 
+    private int sortedUntil = -1;
+
+    public void setSortedUntil(int index) {
+        this.sortedUntil = index;
+    }
+
     public void generateArray(int size, boolean ordered) {
         values = new int[size];
 
@@ -57,6 +63,10 @@ public class SortPanel extends JPanel {
         this.compareIndex = -1;
     }
 
+    public void resetSorted() {
+        this.sortedUntil = -1;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -66,20 +76,18 @@ public class SortPanel extends JPanel {
         int count = values.length;
         double barWidth = (double) panelWidth / count;
 
-        for (int i = 0; i < values.length; i++) {
+        for (int i = 0; i < count; i++) {
             int x = (int) Math.round(i * barWidth);
             int nextX = (int) Math.round((i + 1) * barWidth);
-            int width = nextX - x - 1; // -1 pro mezeru
-
-            // Zajištění minimální šířky 1 pixel
+            int width = nextX - x - 1;
             if (width < 1) width = 1;
 
-            if (i == activeIndex) {
+            if (i <= sortedUntil) {
+                g.setColor(Color.GREEN); // hotové prvky
+            } else if (i == activeIndex) {
                 g.setColor(Color.RED);
             } else if (i == compareIndex) {
-                g.setColor(Color.GREEN);
-            } else {
-                g.setColor(Color.BLUE);
+                g.setColor(Color.YELLOW);
             }
 
             int barHeight = values[i];

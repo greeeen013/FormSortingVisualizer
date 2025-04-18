@@ -22,9 +22,17 @@ public class SelectionSort {
                     arr[i] = arr[minIndex];
                     arr[minIndex] = temp;
                     panel.setValues(arr);
-                    Thread.sleep(delay);
                 }
+
+                // Tady označíme, že prvek na pozici i je hotový
+                panel.setSortedUntil(i);
+                panel.repaint();
+                Thread.sleep(delay);
             }
+
+            // Poslední prvek je taky hotový
+            panel.setSortedUntil(arr.length - 1);
+            panel.repaint();
 
         } catch (InterruptedException e) {
             e.printStackTrace();
