@@ -3,6 +3,8 @@ import java.awt.*;
 
 import Algorithms.BubbleSort;
 import Algorithms.SortPanel;
+import Algorithms.InsertionSort;
+import Algorithms.SelectionSort;
 
 // jenom načte GUI a připojí vše dohromady
 public class SortVisualizer extends JFrame {
@@ -17,6 +19,7 @@ public class SortVisualizer extends JFrame {
     public SortVisualizer() {
         setTitle("Sort Visualizer");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+
         setSize(800, 600);
         setLayout(new BorderLayout());
 
@@ -32,7 +35,7 @@ public class SortVisualizer extends JFrame {
         controls.add(delaySpinner);
 
         controls.add(new JLabel("Algoritmus:"));
-        algorithmBox = new JComboBox<>(new String[]{"Bubble Sort"});
+        algorithmBox = new JComboBox<>(new String[]{"Bubble Sort","Insertion Sort", "Selection Sort"});
         controls.add(algorithmBox);
 
         startButton = new JButton("Spustit");
@@ -63,6 +66,10 @@ public class SortVisualizer extends JFrame {
 
                 if ("Bubble Sort".equals(algo)) {
                     BubbleSort.sort(sortPanel, delay);
+                } else if ("Insertion Sort".equals(algo)) {
+                    InsertionSort.sort(sortPanel, delay);
+                } else if ("Selection Sort".equals(algo)) {
+                    SelectionSort.sort(sortPanel, delay);
                 }
 
                 sortPanel.clearHighlight();

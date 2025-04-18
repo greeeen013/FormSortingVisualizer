@@ -33,7 +33,7 @@ public class SortPanel extends JPanel {
                 values[i] = rand.nextInt(getHeight() - 20) + 10;
             }
         }
-
+        setBackground(Color.BLACK);
         repaint();
     }
 
@@ -62,9 +62,18 @@ public class SortPanel extends JPanel {
         super.paintComponent(g);
         if (values == null) return;
 
-        int width = getWidth() / values.length;
+        int panelWidth = getWidth();
+        int count = values.length;
+        double barWidth = (double) panelWidth / count;
 
         for (int i = 0; i < values.length; i++) {
+            int x = (int) Math.round(i * barWidth);
+            int nextX = (int) Math.round((i + 1) * barWidth);
+            int width = nextX - x - 1; // -1 pro mezeru
+
+            // Zajištění minimální šířky 1 pixel
+            if (width < 1) width = 1;
+
             if (i == activeIndex) {
                 g.setColor(Color.RED);
             } else if (i == compareIndex) {
@@ -74,7 +83,7 @@ public class SortPanel extends JPanel {
             }
 
             int barHeight = values[i];
-            g.fillRect(i * width, getHeight() - barHeight, width - 2, barHeight);
+            g.fillRect(x, getHeight() - barHeight, width, barHeight);
         }
     }
 }
