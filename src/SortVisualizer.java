@@ -11,6 +11,8 @@ public class SortVisualizer extends JFrame {
     private JComboBox<String> algorithmBox;
     private JButton startButton;
     private JSpinner delaySpinner;
+    private JCheckBox orderedCheckBox;
+
 
     public SortVisualizer() {
         setTitle("Sort Visualizer");
@@ -25,6 +27,10 @@ public class SortVisualizer extends JFrame {
         sizeSpinner = new JSpinner(new SpinnerNumberModel(50, 5, 200, 1));
         controls.add(sizeSpinner);
 
+        controls.add(new JLabel("Delay (ms):"));
+        delaySpinner = new JSpinner(new SpinnerNumberModel(30, 0, 1000, 10));
+        controls.add(delaySpinner);
+
         controls.add(new JLabel("Algoritmus:"));
         algorithmBox = new JComboBox<>(new String[]{"Bubble Sort"});
         controls.add(algorithmBox);
@@ -32,9 +38,8 @@ public class SortVisualizer extends JFrame {
         startButton = new JButton("Spustit");
         controls.add(startButton);
 
-        controls.add(new JLabel("Delay (ms):"));
-        delaySpinner = new JSpinner(new SpinnerNumberModel(30, 0, 1000, 10));
-        controls.add(delaySpinner);
+        orderedCheckBox = new JCheckBox("Posloupnost 1..n", true);
+        controls.add(orderedCheckBox);
 
         add(controls, BorderLayout.NORTH);
 
@@ -49,7 +54,8 @@ public class SortVisualizer extends JFrame {
         startButton.addActionListener(e -> {
             int size = (int) sizeSpinner.getValue();
             int delay = (int) delaySpinner.getValue();
-            sortPanel.generateArray(size);
+            boolean ordered = orderedCheckBox.isSelected();
+            sortPanel.generateArray(size, ordered);
 
             new Thread(() -> {
                 startButton.setEnabled(false);

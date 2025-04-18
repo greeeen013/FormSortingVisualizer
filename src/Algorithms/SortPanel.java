@@ -3,6 +3,9 @@ package Algorithms;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
 
 // jenom vykreslování
 public class SortPanel extends JPanel {
@@ -10,12 +13,27 @@ public class SortPanel extends JPanel {
     private int activeIndex = -1;
     private int compareIndex = -1;
 
-    public void generateArray(int size) {
+    public void generateArray(int size, boolean ordered) {
         values = new int[size];
-        Random rand = new Random();
-        for (int i = 0; i < size; i++) {
-            values[i] = rand.nextInt(getHeight() - 20) + 10;
+
+        if (ordered) {
+            for (int i = 0; i < size; i++) {
+                values[i] = (int) ((i + 1) * (getHeight() - 20) / (double) size);
+            }
+
+            // Zamícháme pořadí
+            List<Integer> list = new ArrayList<>();
+            for (int val : values) list.add(val);
+            Collections.shuffle(list);
+            for (int i = 0; i < size; i++) values[i] = list.get(i);
+
+        } else {
+            Random rand = new Random();
+            for (int i = 0; i < size; i++) {
+                values[i] = rand.nextInt(getHeight() - 20) + 10;
+            }
         }
+
         repaint();
     }
 
