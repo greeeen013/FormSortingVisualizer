@@ -88,13 +88,13 @@ public class SortPanel extends JPanel {
             if (width < 1) width = 1;
 
             if (sortedIndices.contains(i)) {
-                g.setColor(Color.GREEN);
+                g.setColor(Color.GREEN); // ✅ Final position
             } else if (i == activeIndex) {
-                g.setColor(Color.RED);
+                g.setColor(Color.RED); // 🔴 Main working element
             } else if (i == compareIndex) {
-                g.setColor(Color.YELLOW);
+                g.setColor(Color.YELLOW); // 🟡 Element being compared to red
             } else
-                g.setColor(Color.BLUE);
+                g.setColor(Color.BLUE); // 🔵 Default / unsorted
 
             int barHeight = values[i];
             g.fillRect(x, getHeight() - barHeight, width, barHeight);

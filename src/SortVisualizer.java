@@ -32,7 +32,7 @@ public class SortVisualizer extends JFrame {
         controls.add(delaySpinner);
 
         controls.add(new JLabel("Algoritmus:"));
-        algorithmBox = new JComboBox<>(new String[]{"Bubble Sort","Insertion Sort", "Selection Sort", "Quick Sort", "Merge Sort", "Shell Sort"});
+        algorithmBox = new JComboBox<>(new String[]{"Bubble Sort","Insertion Sort", "Selection Sort", "Quick Sort", "Merge Sort", "Shell Sort", "Heap Sort", "Radix Sort"});
         controls.add(algorithmBox);
 
         startButton = new JButton("Spustit");
@@ -73,6 +73,10 @@ public class SortVisualizer extends JFrame {
                     MergeSort.sort(sortPanel, delay);
                 } else if ("Shell Sort".equals(algo)) {
                     ShellSort.sort(sortPanel, delay);
+                } else if ("Heap Sort".equals(algo)) {
+                    HeapSort.sort(sortPanel, delay);
+                } else if ("Radix Sort".equals(algo)) {
+                    RadixSort.sort(sortPanel, delay);
                 }
 
                 sortPanel.clearHighlight();
