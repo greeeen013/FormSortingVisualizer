@@ -5,6 +5,7 @@ public class HeapSort {
         int[] arr = panel.getValues();
         int n = arr.length;
         panel.clearSorted();
+        panel.resetStepCount(); // resetuj počet kroků
 
         try {
             // Vytvoření max-heapu
@@ -15,8 +16,9 @@ public class HeapSort {
             // Extrakce prvků z heapu
             for (int i = n - 1; i > 0; i--) {
                 swap(arr, 0, i);
+                panel.incrementStepCount(); // krok: výměna s koncem
                 panel.setValues(arr);
-                panel.markSorted(i); // prvek na konci je hotový
+                panel.markSorted(i);
                 Thread.sleep(delay);
 
                 heapify(arr, i, 0, panel, delay);
@@ -34,20 +36,27 @@ public class HeapSort {
         int left = 2 * i + 1;
         int right = 2 * i + 2;
 
-        if (left < n && arr[left] > arr[largest]) {
-            panel.highlight(largest, left);
+        if (left < n) {
+            panel.highlight(i, left);
+            panel.incrementStepCount(); // krok: porovnání
             Thread.sleep(delay);
-            largest = left;
+            if (arr[left] > arr[largest]) {
+                largest = left;
+            }
         }
 
-        if (right < n && arr[right] > arr[largest]) {
-            panel.highlight(largest, right);
+        if (right < n) {
+            panel.highlight(i, right);
+            panel.incrementStepCount(); // krok: porovnání
             Thread.sleep(delay);
-            largest = right;
+            if (arr[right] > arr[largest]) {
+                largest = right;
+            }
         }
 
         if (largest != i) {
             swap(arr, i, largest);
+            panel.incrementStepCount(); // krok: výměna
             panel.setValues(arr);
             Thread.sleep(delay);
 

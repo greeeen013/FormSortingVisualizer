@@ -4,6 +4,7 @@ public class SelectionSort {
     public static void sort(SortPanel panel, int delay) {
         int[] arr = panel.getValues();
         panel.clearSorted(); // smažeme staré označení
+        panel.resetStepCount(); // resetujeme počet kroků
 
         try {
             for (int i = 0; i < arr.length - 1; i++) {
@@ -12,6 +13,8 @@ public class SelectionSort {
                 for (int j = i + 1; j < arr.length; j++) {
                     panel.highlight(minIndex, j);
                     Thread.sleep(delay);
+
+                    panel.incrementStepCount(); // krok: porovnání
 
                     if (arr[j] < arr[minIndex]) {
                         minIndex = j;
@@ -23,6 +26,7 @@ public class SelectionSort {
                     arr[i] = arr[minIndex];
                     arr[minIndex] = temp;
                     panel.setValues(arr);
+                    panel.incrementStepCount(); // krok: výměna
                 }
 
                 // Označíme prvek na pozici i jako hotový

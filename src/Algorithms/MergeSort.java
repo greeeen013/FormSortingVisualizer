@@ -4,6 +4,7 @@ public class MergeSort {
     public static void sort(SortPanel panel, int delay) {
         int[] arr = panel.getValues();
         panel.clearSorted();
+        panel.resetStepCount(); // reset kroků
 
         try {
             mergeSort(arr, 0, arr.length - 1, panel, delay);
@@ -45,6 +46,7 @@ public class MergeSort {
 
         while (i < n1 && j < n2) {
             panel.highlight(left + i, mid + 1 + j);
+            panel.incrementStepCount(); // krok: porovnání
             Thread.sleep(delay);
 
             if (L[i] <= R[j]) {
@@ -54,6 +56,7 @@ public class MergeSort {
                 arr[k] = R[j];
                 j++;
             }
+            panel.incrementStepCount(); // krok: kopírování do hlavního pole
             panel.setValues(arr);
             k++;
             Thread.sleep(delay);
@@ -61,6 +64,7 @@ public class MergeSort {
 
         while (i < n1) {
             arr[k] = L[i];
+            panel.incrementStepCount(); // krok: zbytek zleva
             i++;
             k++;
             panel.setValues(arr);
@@ -69,6 +73,7 @@ public class MergeSort {
 
         while (j < n2) {
             arr[k] = R[j];
+            panel.incrementStepCount(); // krok: zbytek zprava
             j++;
             k++;
             panel.setValues(arr);

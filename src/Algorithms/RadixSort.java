@@ -6,11 +6,11 @@ public class RadixSort {
     public static void sort(SortPanel panel, int delay) {
         int[] arr = panel.getValues();
         panel.clearSorted();
+        panel.resetStepCount(); // resetujeme počítadlo kroků
 
         try {
             int max = getMax(arr);
 
-            // Pro každé místo (1s, 10s, 100s, ...)
             for (int exp = 1; max / exp > 0; exp *= 10) {
                 countingSortByDigit(arr, exp, panel, delay);
             }
@@ -18,7 +18,7 @@ public class RadixSort {
             // Označíme vše jako hotové
             for (int i = 0; i < arr.length; i++) {
                 panel.markSorted(i);
-                Thread.sleep(2);
+                Thread.sleep(delay);
             }
 
         } catch (InterruptedException e) {
@@ -35,11 +35,13 @@ public class RadixSort {
         for (int i = 0; i < n; i++) {
             int digit = (arr[i] / exp) % 10;
             count[digit]++;
+            panel.incrementStepCount(); // krok: výpočet číslice
         }
 
         // Kumulativní pozice
         for (int i = 1; i < 10; i++) {
             count[i] += count[i - 1];
+            panel.incrementStepCount(); // krok: kumulace
         }
 
         // Vkládání do výstupu
@@ -47,6 +49,7 @@ public class RadixSort {
             int digit = (arr[i] / exp) % 10;
             output[count[digit] - 1] = arr[i];
             count[digit]--;
+            panel.incrementStepCount(); // krok: vkládání do výstupu
         }
 
         // Zpět do původního pole
@@ -54,6 +57,7 @@ public class RadixSort {
             arr[i] = output[i];
             panel.setValues(arr);
             panel.highlight(i, i);
+            panel.incrementStepCount(); // krok: přepis zpět do pole
             Thread.sleep(delay);
         }
     }

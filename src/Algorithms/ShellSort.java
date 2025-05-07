@@ -4,6 +4,7 @@ public class ShellSort {
     public static void sort(SortPanel panel, int delay) {
         int[] arr = panel.getValues();
         panel.clearSorted();
+        panel.resetStepCount(); // resetujeme počet kroků
 
         try {
             int n = arr.length;
@@ -21,12 +22,14 @@ public class ShellSort {
                         j -= gap;
 
                         panel.setValues(arr);
+                        panel.incrementStepCount(); // krok: výměna
                         Thread.sleep(delay);
                     }
 
                     arr[j] = temp;
                     panel.setValues(arr);
                     panel.highlight(j, i);
+                    panel.incrementStepCount(); // krok: vložení
                     Thread.sleep(delay);
                 }
             }

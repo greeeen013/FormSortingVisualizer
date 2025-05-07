@@ -15,7 +15,7 @@ public class SortVisualizer extends JFrame {
     public SortVisualizer() {
         setTitle("Sort Visualizer");  // Nastavení názvu okna
         setDefaultCloseOperation(EXIT_ON_CLOSE);  // Ukončení aplikace při zavření okna
-        setSize(800, 600);  // Nastavení velikosti okna
+        setSize(1200, 700);  // Nastavení velikosti okna
         setLayout(new BorderLayout());  // Nastavení layoutu okna (rozdělení na části)
 
         // Ovládací panel pro zadávání parametrů třídění
@@ -44,6 +44,9 @@ public class SortVisualizer extends JFrame {
         JLabel timeLabel = new JLabel("Doba běhu: 0.000 s");
         controls.add(timeLabel);
 
+        JLabel stepLabel = new JLabel("Počet kroků: 0");
+        controls.add(stepLabel);
+
         // Přidání ovládacího panelu do severní části okna
         add(controls, BorderLayout.NORTH);
 
@@ -60,8 +63,11 @@ public class SortVisualizer extends JFrame {
 
             // Vytvoření nového vlákna pro spuštění algoritmu bez blokování hlavního GUI vlákna
             new Thread(() -> {
+                sortPanel.resetStepCount(); // resetuje počet kroků
                 startButton.setEnabled(false);  // Deaktivace tlačítka "Spustit" během běhu algoritmu
                 String algo = (String) algorithmBox.getSelectedItem();  // Výběr algoritmu
+
+
 
                 // Podmínky pro spuštění vybraného algoritmu
                 if ("Bubble Sort".equals(algo)) {
@@ -82,7 +88,10 @@ public class SortVisualizer extends JFrame {
                     RadixSort.sort(sortPanel, delay);
                 }
 
+
                 // Po dokončení třídění
+                int steps = sortPanel.getStepCount(); // získání počtu kroků
+                stepLabel.setText("Počet kroků: " + steps); // aktualizace GUI
                 sortPanel.clearHighlight();  // Vyčištění zvýraznění v panelu
                 sortPanel.repaint();  // Obnovení zobrazení panelu
                 startButton.setEnabled(true);  // Znovu povolit tlačítko "Spustit"

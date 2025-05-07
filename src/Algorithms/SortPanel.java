@@ -113,4 +113,17 @@ public class SortPanel extends JPanel {
             g.fillRect(x, getHeight() - barHeight, width, barHeight); // Vykreslení sloupce na panelu
         }
     }
+    private int stepCount = 0;
+
+    public void resetStepCount() {
+        stepCount = 0;
+    }
+
+    public void incrementStepCount() {
+        stepCount++;
+    }
+
+    public int getStepCount() {
+        return stepCount;
+    }
 }

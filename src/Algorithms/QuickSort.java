@@ -3,7 +3,8 @@ package Algorithms;
 public class QuickSort {
     public static void sort(SortPanel panel, int delay) {
         int[] arr = panel.getValues();
-        panel.clearSorted(); // vymaže dřívější označení
+        panel.clearSorted();
+        panel.resetStepCount(); // resetujeme počet kroků
 
         try {
             quickSort(arr, 0, arr.length - 1, panel, delay);
@@ -23,11 +24,9 @@ public class QuickSort {
         if (low < high) {
             int pivotIndex = partition(arr, low, high, panel, delay);
 
-            // Rekurzivní volání pro levou a pravou část
             quickSort(arr, low, pivotIndex - 1, panel, delay);
             quickSort(arr, pivotIndex + 1, high, panel, delay);
         } else if (low == high) {
-            // Pokud už zbývá jen jeden prvek, je hotový
             panel.markSorted(low);
         }
     }
@@ -37,22 +36,24 @@ public class QuickSort {
         int i = low - 1;
 
         for (int j = low; j < high; j++) {
-            panel.highlight(j, high); // porovnáváme s pivotem
+            panel.highlight(j, high);
+            panel.incrementStepCount(); // krok: porovnání s pivotem
             Thread.sleep(delay);
 
             if (arr[j] < pivot) {
                 i++;
                 swap(arr, i, j);
+                panel.incrementStepCount(); // krok: swap
                 panel.setValues(arr);
                 Thread.sleep(delay);
             }
         }
 
         swap(arr, i + 1, high);
+        panel.incrementStepCount(); // krok: finální swap s pivotem
         panel.setValues(arr);
         Thread.sleep(delay);
 
-        // Označíme pivot jako hotový
         panel.markSorted(i + 1);
         return i + 1;
     }
