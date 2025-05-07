@@ -1,66 +1,69 @@
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.*;  // Import knihovny pro GUI komponenty
+import java.awt.*;  // Import pro rozložení a grafiku (Abstract Window Toolkit)
 
-import Algorithms.*;
+import Algorithms.*;  // Import tříd pro algoritmy třídění (předpokládá se, že jsou ve složce Algorithms)
 
-// jenom načte GUI a připojí vše dohromady
+// Třída pro hlavní okno vizualizace třídění
 public class SortVisualizer extends JFrame {
-    private SortPanel sortPanel;
-    private JSpinner sizeSpinner;
-    private JComboBox<String> algorithmBox;
-    private JButton startButton;
-    private JSpinner delaySpinner;
-    private JCheckBox orderedCheckBox;
+    private SortPanel sortPanel;  // Panel pro vizualizaci třídění
+    private JSpinner sizeSpinner;  // Ovládací prvek pro volbu velikosti pole
+    private JComboBox<String> algorithmBox;  // Výběr algoritmu
+    private JButton startButton;  // Tlačítko pro spuštění třídění
+    private JSpinner delaySpinner;  // Ovládací prvek pro nastavení zpoždění mezi kroky třídění
 
-
+    // Konstruktor pro nastavení GUI a připojení komponent
     public SortVisualizer() {
-        setTitle("Sort Visualizer");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setTitle("Sort Visualizer");  // Nastavení názvu okna
+        setDefaultCloseOperation(EXIT_ON_CLOSE);  // Ukončení aplikace při zavření okna
+        setSize(800, 600);  // Nastavení velikosti okna
+        setLayout(new BorderLayout());  // Nastavení layoutu okna (rozdělení na části)
 
-        setSize(800, 600);
-        setLayout(new BorderLayout());
-
-        // Ovládací panel
+        // Ovládací panel pro zadávání parametrů třídění
         JPanel controls = new JPanel();
 
+        // Ovládací prvek pro výběr velikosti pole
         controls.add(new JLabel("Velikost pole:"));
-        sizeSpinner = new JSpinner(new SpinnerNumberModel(50, 5, 200, 1));
+        sizeSpinner = new JSpinner(new SpinnerNumberModel(50, 5, 2000, 1));  // Min: 5, Max: 2000, krok: 1
         controls.add(sizeSpinner);
 
+        // Ovládací prvek pro nastavení zpoždění mezi kroky třídění
         controls.add(new JLabel("Delay (ms):"));
-        delaySpinner = new JSpinner(new SpinnerNumberModel(10, 0, 1000, 10));
+        delaySpinner = new JSpinner(new SpinnerNumberModel(10, 0, 1000, 10));  // Min: 0, Max: 1000, krok: 10 ms
         controls.add(delaySpinner);
 
+        // Výběr algoritmu třídění
         controls.add(new JLabel("Algoritmus:"));
-        algorithmBox = new JComboBox<>(new String[]{"Bubble Sort","Insertion Sort", "Selection Sort", "Quick Sort", "Merge Sort", "Shell Sort", "Heap Sort", "Radix Sort"});
+        algorithmBox = new JComboBox<>(new String[]{"Bubble Sort", "Insertion Sort", "Selection Sort", "Quick Sort", "Merge Sort", "Shell Sort", "Heap Sort", "Radix Sort"});
         controls.add(algorithmBox);
 
+        // Tlačítko pro spuštění třídění
         startButton = new JButton("Spustit");
         controls.add(startButton);
 
+        // Zobrazení doby běhu algoritmu
         JLabel timeLabel = new JLabel("Doba běhu: 0.000 s");
         controls.add(timeLabel);
 
+        // Přidání ovládacího panelu do severní části okna
         add(controls, BorderLayout.NORTH);
 
-        // Vizuální panel
+        // Panel pro vizualizaci třídění
         sortPanel = new SortPanel();
         add(sortPanel, BorderLayout.CENTER);
 
-
-
-
-        // Tlačítko spuštění
+        // Nastavení akce pro tlačítko "Spustit"
         startButton.addActionListener(e -> {
-            int size = (int) sizeSpinner.getValue();
-            int delay = (int) delaySpinner.getValue();
-            long startTime = System.nanoTime();
-            sortPanel.generateArray(size, true);
+            int size = (int) sizeSpinner.getValue();  // Získání hodnoty pro velikost pole
+            int delay = (int) delaySpinner.getValue();  // Získání hodnoty pro zpoždění
+            long startTime = System.nanoTime();  // Uložení začátku času pro měření doby běhu
+            sortPanel.generateArray(size, true);  // Generování náhodného pole pro třídění... ordered: true znamena ze vygenerovane čísla budou vždy +1 jinak muzou byt nahodne
 
+            // Vytvoření nového vlákna pro spuštění algoritmu bez blokování hlavního GUI vlákna
             new Thread(() -> {
-                startButton.setEnabled(false);
-                String algo = (String) algorithmBox.getSelectedItem();
+                startButton.setEnabled(false);  // Deaktivace tlačítka "Spustit" během běhu algoritmu
+                String algo = (String) algorithmBox.getSelectedItem();  // Výběr algoritmu
 
+                // Podmínky pro spuštění vybraného algoritmu
                 if ("Bubble Sort".equals(algo)) {
                     BubbleSort.sort(sortPanel, delay);
                 } else if ("Insertion Sort".equals(algo)) {
@@ -79,19 +82,22 @@ public class SortVisualizer extends JFrame {
                     RadixSort.sort(sortPanel, delay);
                 }
 
-                sortPanel.clearHighlight();
-                sortPanel.repaint();
-                startButton.setEnabled(true);
-                long endTime = System.nanoTime();
-                double duration = (endTime - startTime) / 1_000_000_000.0;
-                timeLabel.setText(String.format("Doba běhu: %.3f s", duration));
-            }).start();
+                // Po dokončení třídění
+                sortPanel.clearHighlight();  // Vyčištění zvýraznění v panelu
+                sortPanel.repaint();  // Obnovení zobrazení panelu
+                startButton.setEnabled(true);  // Znovu povolit tlačítko "Spustit"
+                long endTime = System.nanoTime();  // Uložení koncového času
+                double duration = (endTime - startTime) / 1_000_000_000.0;  // Výpočet doby běhu v sekundách a 1_000_000_000.0 aby to převedlo nanosekundy na seukundy
+                timeLabel.setText(String.format("Doba běhu: %.3f s", duration));  // Zobrazení doby běhu
+            }).start();  // Spuštění vlákna
+
         });
 
-        setVisible(true);
+        setVisible(true);  // Nastavení viditelnosti okna
     }
 
+    // Hlavní metoda pro spuštění aplikace
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(SortVisualizer::new);
+        SwingUtilities.invokeLater(SortVisualizer::new);  // Spuštění GUI ve vlákně Swing
     }
 }

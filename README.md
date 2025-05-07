@@ -83,7 +83,7 @@ A generalization of insertion sort that allows exchange of far-apart elements.
 - **GREEN**: Sorted elements  
 - **BLUE**: Still in progress  
 
-## 🌲 Heap Sort (soon)
+## 🌲 Heap Sort
 Uses a heap data structure to build a max-heap and extract the largest elements one by one.
 
 - **RED**: Element currently being heapified  
@@ -91,7 +91,7 @@ Uses a heap data structure to build a max-heap and extract the largest elements 
 - **GREEN**: Final sorted elements (extracted from the heap)  
 - **BLUE**: Not yet in heap or not processed  
 
-## 🔢 Radix Sort (soon)
+## 🔢 Radix Sort
 A non-comparative integer sorting algorithm that processes digits from least significant to most significant.
 
 - **RED**: Element being placed based on current digit  
